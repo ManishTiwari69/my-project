@@ -80,6 +80,7 @@ const Header = () => {
 
             if (response.ok) {
                 alert("Logged out successfully");
+                localStorage.setItem('auth','false');
                 setUser(null);
             } else {
                 alert("Logout failed");

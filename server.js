@@ -167,7 +167,7 @@ app.post('/userLogin', (req, res) => {
                             console.log('Error updating last login date: ' + updateErr);
                         }
                     });
-
+                   
                     req.session.user = {
                         email: results[0].email,
                         id: results[0].id,
@@ -204,8 +204,7 @@ app.post('/recommendAdd',(req,res)=>{
     })
 })
 app.post('/booking-form',(req,res)=>{
-    const{transactionId,First_Name,
-        Last_Name,
+    const{transactionId,Full_Name,
         Email,
         Country,
         Phone_number,
@@ -214,8 +213,8 @@ app.post('/booking-form',(req,res)=>{
         Package_Name,
         Start_Date,
         Num_People,Price}=req.body;
-        const query='INSERT INTO booking_details(First_Name,Last_Name,Email,Country,Phone_Number,Address,Postal_Code,Package_Name,Start_Date,Num_People,price,Transaction_id) Values(?,?,?,?,?,?,?,?,?,?,?,?)';
-        db.query(query,[First_Name,Last_Name,Email,Country,Phone_number,Address,Postal_Code,Package_Name,Start_Date,Num_People,parseInt(Price),transactionId],(err,data)=>{
+        const query='INSERT INTO booking_details(Full_Name,Email,Country,Phone_Number,Address,Postal_Code,Package_Name,Start_Date,Num_People,price,Transaction_id) Values(?,?,?,?,?,?,?,?,?,?,?)';
+        db.query(query,[Full_Name,Email,Country,Phone_number,Address,Postal_Code,Package_Name,Start_Date,Num_People,parseInt(Price),transactionId],(err,data)=>{
             if(err){
                 res.status(500).send({message:"Booking failed"});
             }
