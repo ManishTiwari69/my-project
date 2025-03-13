@@ -167,7 +167,7 @@ app.post('/userLogin', (req, res) => {
                             console.log('Error updating last login date: ' + updateErr);
                         }
                     });
-                   
+
                     req.session.user = {
                         email: results[0].email,
                         id: results[0].id,
@@ -183,6 +183,7 @@ app.post('/userLogin', (req, res) => {
         }
     });
 });
+
 
 
 app.get('/api/auth/me',(req,res)=>{
