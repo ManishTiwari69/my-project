@@ -89,8 +89,30 @@ const Header = () => {
             console.error("Logout error:", err);
         }
     };
-
-
+    
+    const handleCancel = async (booking_id) => {
+        const confirmCancel = window.confirm("Are you sure you want to cancel this booking?");
+        if (!confirmCancel) return;
+        console.log(typeof(booking_id));
+        try {
+          const response = await fetch("http://localhost:3000/cancelBookingRequest", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ bookingId: parseInt(booking_id) }),
+          });
+      
+          if (response.ok) {
+            alert("Cancellation request sent to admin successfully.");
+            window.location.reload();
+            
+          } else {
+            alert("Failed to send cancellation request. Please try again.");
+          }
+        } catch (error) {
+          console.error("Error occurred while sending cancellation request", error);
+        }
+      };
+      
     return (
         <>
             <header className="flex items-center justify-between py-3 px-5 w-full lg:py-5 lg:px-10 h-[10vh] bg-[#f8f8f8] z-40 fixed">
@@ -190,7 +212,7 @@ const Header = () => {
                 <h3 className="text-xl font-semibold mb-2">Booking {index + 1}</h3>
                 <ul className="space-y-2">
                     <li><strong>Booking ID:</strong> {pkg.booking_id}</li>
-                    <li><strong>Full Name:</strong> {pkg.First_Name} {pkg.Last_Name}</li>
+                    <li><strong>Full Name:</strong> {pkg.Full_Name}</li>
                     <li><strong>Email:</strong> {pkg.Email}</li>
                     <li><strong>Country:</strong> {pkg.Country}</li>
                     <li><strong>Phone Number:</strong> {pkg.Phone_Number}</li>
@@ -201,7 +223,9 @@ const Header = () => {
                     <li><strong>Number of People:</strong> {pkg.Num_People}</li>
                     <li><strong>Price:</strong> {pkg.price}</li>
                     <li><strong>Transaction ID:</strong> {pkg.Transaction_Id}</li>
+                    <li><strong>Status:</strong>{pkg.Status}</li>
                 </ul>
+                <button onClick={()=>handleCancel(pkg.booking_id)} className="bg-red-500 text-white py-2 rounded-lg px-4">Cancel Booking</button>
             </div>
         ))}
     </div>

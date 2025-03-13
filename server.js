@@ -147,6 +147,28 @@ app.post('/adminLogin', (req, res) => {
         }
     });
 });
+app.post('/cancelBooking', (req, res) => {
+    const { booking_id } = req.body;
+
+    if (!booking_id) {
+        return res.status(400).send({ message: 'Booking ID is required.' });
+    }
+
+    const query = "UPDATE booking_details SET status = 'Cancelled' WHERE booking_id = ?";
+
+    db.query(query, [booking_id], (err, result) => {
+        if (err) {
+            console.error('Database query error:', err);
+            return res.status(500).send({ message: 'An error occurred while processing the request.' });
+        }
+
+        if (result.affectedRows > 0) {
+            res.status(200).send({ message: 'Booking cancelled successfully.' });
+        } else {
+            res.status(404).send({ message: 'Booking ID not found.' });
+        }
+    });
+});
 app.post('/userLogin', (req, res) => {
     const { email, password } = req.body;
     const query = 'SELECT * FROM userlogin WHERE email = ? AND role = "user"';
@@ -180,6 +202,22 @@ app.post('/userLogin', (req, res) => {
             });
         } else {
             res.status(401).send({ message: 'Invalid email or password' });
+        }
+    });
+});
+app.post('/cancelBookingRequest', (req, res) => {
+    const { bookingId } = req.body;
+    console.log(req.body);
+    const query = "UPDATE booking_details SET status='Cancel Request' WHERE booking_id = ?";
+    
+    db.query(query, [parseInt(bookingId)], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send({ message: 'An error occurred while processing the request.' });
+        } else if (result.affectedRows > 0) {
+            res.status(200).send({ message: 'Cancellation request submitted successfully.' });
+        } else {
+            res.status(404).send({ message: 'Booking ID not found.' });
         }
     });
 });

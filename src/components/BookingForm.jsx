@@ -24,7 +24,8 @@ const BookingForm = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [isPaying, setIsPaying] = useState(false); // To track if the payment is in progress
+  const [isPaying, setIsPaying] = useState(false);
+  const[payment,setPayment]=useState(false); // To track if the payment is in progress
 
   // Check if the user is logged in and fetch their data
   useEffect(() => {
@@ -118,6 +119,7 @@ const BookingForm = () => {
 
       if (response.ok) {
         alert("Booking Success");
+        window.location.reload();
       } else {
         alert("Booking failed");
       }
@@ -262,6 +264,7 @@ const BookingForm = () => {
                   setIsPaying(true); // Disable the button while paying
                   return actions.order.capture().then((details) => {
                     setTransactionId(details.id);
+                    setPayment(true);
                     setIsPaying(false); // Re-enable the button after successful payment
                   });
                 }}
@@ -269,7 +272,7 @@ const BookingForm = () => {
                   console.error("Paypal Checkout Error", err);
                   setIsPaying(false); // Re-enable the button if there's an error
                 }}
-                disabled={isPaying} // Disable the button if payment is in progress
+                disabled={isPaying||payment} // Disable the button if payment is in progress
               />
             </label>
 
