@@ -205,6 +205,7 @@ app.post('/userLogin', (req, res) => {
         }
     });
 });
+
 app.post('/cancelBookingRequest', (req, res) => {
     const { bookingId } = req.body;
     console.log(req.body);
